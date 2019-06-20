@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +8,7 @@ namespace PasswordManager
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -27,7 +28,7 @@ namespace PasswordManager
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            serviceProvider.GetService<AppHost>().Run(args);
+            await serviceProvider.GetService<AppHost>().Run(args);
         }
     }
 }

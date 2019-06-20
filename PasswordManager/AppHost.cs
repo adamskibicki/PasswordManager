@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PasswordManager
 {
@@ -13,7 +14,7 @@ namespace PasswordManager
             _pagesStorage = pagesStorage;
         }
 
-        public void Run(string[] args)
+        public async Task Run(string[] args)
         {
             while (true)
             {
@@ -47,7 +48,7 @@ namespace PasswordManager
                         Console.WriteLine("Write page password:");
                         string password = Console.ReadLine();
 
-                        _pagesStorage.Add(new Page {Name = name, Password = password, Url = url});
+                        await _pagesStorage.AddAsync(new Page {Name = name, Password = password, Url = url});
 
                         break;
                     case ConsoleKey.D6:

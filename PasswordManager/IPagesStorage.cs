@@ -1,7 +1,9 @@
-﻿namespace PasswordManager
+﻿using System.Threading.Tasks;
+
+namespace PasswordManager
 {
     public interface IPagesStorage
     {
-        bool Add(Page page);
+        Task<bool> AddAsync(Page page);
     }
 }

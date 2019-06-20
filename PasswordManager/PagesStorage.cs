@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
@@ -16,7 +17,7 @@ namespace PasswordManager
             _dynamoDbConfiguration = dynamoDbConfiguration;
         }
 
-        public bool Add(Page page)
+        public async Task<bool> AddAsync(Page page)
         {
             AmazonDynamoDBClient client = new AmazonDynamoDBClient(new BasicAWSCredentials(_dynamoDbConfiguration.DynamoDBAccessKeyId, _dynamoDbConfiguration.DynamoDBSecretAccessKey), RegionEndpoint.USEast2);
 
@@ -28,7 +29,7 @@ namespace PasswordManager
             pageDocument[nameof(page.Password)] = page.Password;
             pageDocument["Id"] = Guid.NewGuid().ToString();
 
-            var result = table.PutItemAsync(pageDocument, CancellationToken.None).GetAwaiter().GetResult();
+            var result = await table.PutItemAsync(pageDocument, CancellationToken.None);
 
             return true;
         }
