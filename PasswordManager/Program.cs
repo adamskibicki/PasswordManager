@@ -18,8 +18,12 @@ namespace PasswordManager
                 .Build();
 
             IServiceCollection serviceCollection = new ServiceCollection()
-                .AddSingleton<IDisplayConfiguration, DisplayConfiguration>(provider => configuration.Get<DisplayConfiguration>())
-                .AddSingleton<AppHost, AppHost>();
+                .AddSingleton<IDisplayConfiguration, DisplayConfiguration>(provider =>
+                    configuration.Get<DisplayConfiguration>())
+                .AddSingleton<IDynamoDbConfiguration, DynamoDbConfiguration>(provider =>
+                    configuration.Get<DynamoDbConfiguration>())
+                .AddSingleton<AppHost, AppHost>()
+                .AddTransient<IPagesStorage, PagesStorage>();
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
