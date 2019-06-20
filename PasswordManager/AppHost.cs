@@ -15,7 +15,6 @@ namespace PasswordManager
 
         public void Run(string[] args)
         {
-
             while (true)
             {
                 string[] menuItems = new[]
