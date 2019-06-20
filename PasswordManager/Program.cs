@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.FileExtensions;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.Configuration.Binder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PasswordManager
 {
@@ -19,16 +17,13 @@ namespace PasswordManager
                 .AddJsonFile($"appsettings.{environmentName}.json", true, true)
                 .Build();
 
-            DisplayConfiguration displayConfiguration = configuration.Get<DisplayConfiguration>();
+            IServiceCollection serviceCollection = new ServiceCollection()
+                .AddSingleton<IDisplayConfiguration, DisplayConfiguration>(provider => configuration.Get<DisplayConfiguration>())
+                .AddSingleton<AppHost, AppHost>();
 
-            Console.WriteLine(displayConfiguration.AppDisplayName);
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            Console.ReadKey();
+            serviceProvider.GetService<AppHost>().Run(args);
         }
-    }
-
-    public class DisplayConfiguration
-    {
-        public string AppDisplayName { get; set; }
     }
 }
